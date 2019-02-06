@@ -1,9 +1,13 @@
 extern crate ml_from_scratch;
 
 use ml_from_scratch::matrix::Matrix;
-use ml_from_scratch::{TrainingData, NeuralNetwork};
+use ml_from_scratch::neural_network::{TrainingData, NeuralNetwork};
 
 fn main() {
+    neural_network_example();
+}
+
+fn neural_network_example() {
     let num_inputs = 2;
     let num_layers = 2;
     let mut nn = NeuralNetwork::new(num_inputs, num_layers);
