@@ -1,0 +1,24 @@
+# Maching Learning from Scratch Using Rust
+
+The purpose of this repository is to document my journey in learning machine learning and implementing various algorithms and data structures in Rust, from scratch.
+
+## Current Implementations
+
+* Matrices
+* Neural Network
+
+## Current Examples
+- Learning an XOR Gate function using a Neural Network
+
+## Commands
+
+To run tests:
+`cargo test`
+
+To run examples: `cargo run` or `cargo run --release` (faster execution)
+
+## License
+
+Copyright (c) 2019, Long Nguyen <lnguyenfx@live.com>
+
+Licensed under the [MIT License](../master/LICENSE.txt)
