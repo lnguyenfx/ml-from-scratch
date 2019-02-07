@@ -33,7 +33,7 @@ fn main() {
             println!();
             let _ = Command::new("cmd.exe").arg("/c").arg("pause").status();
         } else {
-            write!(stdout, "\nPress any any key to continue...").unwrap();
+            write!(stdout, "\nPress [Enter] key to continue...").unwrap();
             stdout.flush().unwrap();
             let _ = io::stdin().read(&mut [0u8]).unwrap();
         }
