@@ -1,61 +1,43 @@
-extern crate ml_from_scratch;
+pub mod examples;
 
-use ml_from_scratch::matrix::Matrix;
-use ml_from_scratch::neural_network::{TrainingData, NeuralNetwork};
+use std::io;
+use std::io::prelude::*;
+use std::process::Command;
 
 fn main() {
-    neural_network_example();
-}
+    loop {
+        println!("Machine Learning Examples: ");
+        println!("  0) Quit");
+        println!("  1) Learning XOR Gate with Neural Network");
+        
+        let mut stdout = io::stdout();
+        write!(stdout, "\nEnter option number: ").unwrap();
+        stdout.flush().unwrap();
+        
+        let mut option = String::new();
+        io::stdin().read_line(&mut option).unwrap();
+        let option: i32 = option.trim().parse().unwrap_or(-1);
 
-fn neural_network_example() {
-    println!("Example: Learning the XOR Gate using a Neural Network");
+        println!();
 
-    let num_inputs = 2;
-    let num_layers = 2;
-    let mut nn = NeuralNetwork::new(num_inputs, num_layers);
-    
-    nn.set_weights(&vec![
-        Matrix::from_str("[[-0.1,0.1],[-0.1,0.1]]"),
-        Matrix::from_str("[[0.1,-0.1],[0.1,-0.1]]"),
-    ]);
+        match option {
+            0 => break,
+            1 => examples::neural_network::learing_xor_gate(),
+            _ => {
+                println!("Invalid option!\n");
+                continue;
+            }
+        }
+        
+        if cfg!(windows) {
+            println!();
+            let _ = Command::new("cmd.exe").arg("/c").arg("pause").status();
+        } else {
+            write!(stdout, "\nPress any any key to continue...").unwrap();
+            stdout.flush().unwrap();
+            let _ = io::stdin().read(&mut [0u8]).unwrap();
+        }
 
-    for i in 0..num_layers {
-        println!("Initial weights for layer {}: {}", i, nn.get_weights()[i].to_string_fmt(1));
+        println!();
     }
-
-    // Training XOR Gate
-    let inputs: Vec<Vec<f64>> = vec![
-        vec![1.0, 1.0], // T T
-        vec![1.0, 0.0], // T F
-        vec![0.0, 1.0], // F T
-        vec![0.0, 0.0], // F F
-    ];
-
-    let targets: Vec<Vec<f64>> = vec![
-        vec![0.0, 1.0], // T T -> F
-        vec![1.0, 0.0], // T F -> T
-        vec![1.0, 0.0], // F T -> T
-        vec![0.0, 1.0], // F F -> F
-    ];
-    
-    let mut data: TrainingData = Vec::new();
-    for i in 0..inputs.len() {
-        data.push((inputs[i].clone(), targets[i].clone()));
-    }
-
-    let learning_rate = 0.1;
-    let epochs = 500000;
-    
-    nn.train(&data, learning_rate, epochs);
-
-    for i in 0..num_layers {
-        println!("Final weights for layer {}: {}", i, nn.get_weights()[i].to_string_fmt(5));
-    }
-
-    // Test the model after training
-    println!("\nEvaluation model using final weights: ");
-    println!("T T -> {}", nn.execute(&vec![1.0, 1.0]).to_string_fmt(5));
-    println!("T F -> {}", nn.execute(&vec![1.0, 0.0]).to_string_fmt(5));
-    println!("F T -> {}", nn.execute(&vec![0.0, 1.0]).to_string_fmt(5));
-    println!("F F -> {}", nn.execute(&vec![0.0, 0.0]).to_string_fmt(5));
 }
